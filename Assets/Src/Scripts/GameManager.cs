@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
     
     public GameDate gameDate = new GameDate();
+    public uint turns = 0;
     
     #region Party Management
     [SerializeField] private Sprite[] m_pPortraits;
@@ -37,20 +38,15 @@ public class GameManager : MonoBehaviour {
 
         var ev = new DateEvent(new GameDate(2024, 3, 1));
 
-        Dispatcher.DateChanged += ev.Dispatch;
-        Dispatcher.DateChanged += (s, e) => Debug.Log($"Hello World from T:{gameDate.Week}/M:{gameDate.Month}/R:{gameDate.Year}!");
-    }
-
-    private void Update() {
-        if (Input.GetMouseButtonDown(1)) {
-            this.NextTurn();
-        }
+        /*Dispatcher.DateChanged += ev.Dispatch;*/
+        Dispatcher.DateChanged += (s, e) => Debug.Log($"T:{gameDate.Week}/M:{gameDate.Month}/R:{gameDate.Year} T:{this.turns}!");
     }
 
     public void NextTurn() {
         gameDate.AddWeek();
+        this.turns++;
         
-        Dispatcher.DispatchDateChanged(this, new CustomArgs.DateChangedArgs(this.gameDate));
+        Dispatcher.DispatchDateChanged(this, new CustomArgs.DateChangedArgs(this.gameDate, this.turns));
     }
     
     public Sprite[] Portraits()
