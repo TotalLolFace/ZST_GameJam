@@ -1,24 +1,44 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour {
+    public static GameManager Instance { get; private set; }
+    
     public GameDate gameDate = new GameDate();
-    public PartyManager PM = new PartyManager();
+    
+    #region Party Management
+    [SerializeField] private Sprite[] m_pPortraits;
+    
+    /// <summary>
+    /// Current player's Political Party
+    /// </summary>
+    private CParty m_pCurrentParty;
+    
+    public void CreateParty(CParty.PartyName name, CParty.PartyType type)
+    {
+        m_pCurrentParty = new CParty(name, type);
+    }
+    
+    public Sprite RandomPortrait()
+    {
+        return GameManager.Instance.Portraits()[Random.Range(0, GameManager.Instance.Portraits().Length)];
+    }
+    #endregion
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) Destroy(this);
+        Instance = this;
+        DontDestroyOnLoad(this);
+    }
+    
     private void Start() {
-        PM.partyName = PartyName.KONFEDERACJA;
-        PM.partyType = PartyType.RIGHT;
+        CreateParty(CParty.PartyName.KONFEDERACJA, CParty.PartyType.RIGHT);
 
         var ev = new DateEvent(new GameDate(2024, 3, 1));
 
         Dispatcher.DateChanged += ev.Dispatch;
         Dispatcher.DateChanged += (s, e) => Debug.Log($"Hello World from T:{gameDate.Week}/M:{gameDate.Month}/R:{gameDate.Year}!");
-    }
-
-    private void Test(object sender, EventArgs e) {
-        Debug.Log(1);
     }
 
     private void Update() {
@@ -31,5 +51,10 @@ public class GameManager : MonoBehaviour {
         gameDate.AddWeek();
         
         Dispatcher.DispatchDateChanged(this, new CustomArgs.DateChangedArgs(this.gameDate));
+    }
+    
+    public Sprite[] Portraits()
+    {
+        return m_pPortraits;
     }
 }
