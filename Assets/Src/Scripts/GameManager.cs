@@ -38,9 +38,12 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         CreateParty(CParty.PartyName.KONFEDERACJA, CParty.PartyType.RIGHT);
 
+        var ev = new DateEvent(new GameDate(2024, 3, 1));
+
+        Dispatcher.DateChanged += ev.Dispatch;
         Dispatcher.DateChanged += (s, e) => Debug.Log($"Hello World from T:{gameDate.Week}/M:{gameDate.Month}/R:{gameDate.Year}!");
     }
-    
+
     private void Update() {
         if (Input.GetMouseButtonDown(1)) {
             this.NextTurn();
