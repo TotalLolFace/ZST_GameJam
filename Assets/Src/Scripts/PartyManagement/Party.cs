@@ -11,7 +11,7 @@ public class CPartyMember
     {
         m_szFirstName = szFirstName;
         m_szLastName = szLastName;
-        m_pPortrait = GameManager.Instance.RandomizePersonImage();
+        m_pPortrait = GameManager.Instance.PartyManager.RandomPortrait();
     }
 
     public Sprite Portrait()
@@ -39,13 +39,14 @@ public class CParty
 {
     private string m_szName;
     private List<CPartyMember> m_pMembers;
+    // TODO: Add party's statistics ~GabrielV
 
     public CParty(string szName)
     {
         m_szName = szName;
     }
 
-    public string name()
+    public string Name()
     {
         return m_szName;
     }
@@ -62,11 +63,7 @@ public class CParty
     
     public CPartyMember GetMember(string szFirstName, string szLastName)
     {
-        foreach (CPartyMember pMember in m_pMembers)
-        {
-            if (pMember.Equals(szFirstName, szLastName)) return pMember;
-        }
-
+        foreach (CPartyMember pMember in m_pMembers) if (pMember.Equals(szFirstName, szLastName)) return pMember;
         return null;
     }
 

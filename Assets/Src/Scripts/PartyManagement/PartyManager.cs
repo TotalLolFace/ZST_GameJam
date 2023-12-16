@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CPartyManager
 {
-    private static CParty m_pCurrentParty;
+    private CParty m_pCurrentParty;
     
-    public static void CreateParty(string name)
+    public void CreateParty(string name)
     {
         m_pCurrentParty = new CParty(name);
+    }
+    
+    public Sprite RandomPortrait()
+    {
+        return GameManager.Instance.Portraits()[Random.Range(0, GameManager.Instance.Portraits().Length)];
     }
 }
