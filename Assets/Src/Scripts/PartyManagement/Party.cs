@@ -62,6 +62,7 @@ public class CParty
 
     public CParty(PartyName eName, PartyType eType)
     {
+        m_pMembers = new List<CPartyMember>();
         m_eName = eName;
         m_eType = eType;
         PP = 100;
