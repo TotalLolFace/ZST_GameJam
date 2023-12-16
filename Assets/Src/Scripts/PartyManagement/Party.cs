@@ -11,7 +11,7 @@ public class CPartyMember
     {
         m_szFirstName = szFirstName;
         m_szLastName = szLastName;
-        m_pPortrait = GameManager.Instance.PartyManager.RandomPortrait();
+        m_pPortrait = GameManager.Instance.RandomPortrait();
     }
 
     public Sprite Portrait()
@@ -37,18 +37,68 @@ public class CPartyMember
 
 public class CParty
 {
-    private string m_szName;
+    public enum PartyName {
+        KO,
+        PIS,
+        PSL,
+        PL2050,
+        KONFEDERACJA,
+        LEWICA
+    }
+    
+    public enum PartyType {
+        LEFT,
+        CENTER,
+        RIGHT
+    }
+    
+    private PartyName m_eName;
+    private PartyType m_eType;
+    private uint partyPrivilges;
+    private byte polePartySupport;
+    private byte realPartySupport;
     private List<CPartyMember> m_pMembers;
     // TODO: Add party's statistics ~GabrielV
 
-    public CParty(string szName)
+    public CParty(PartyName eName, PartyType eType)
     {
-        m_szName = szName;
+        m_eName = eName;
+        m_eType = eType;
+        PP = 100;
+        PPS = 100;
+        RPS = 100;
+    }
+    
+    public uint PP {
+        set {
+            this.partyPrivilges = value;
+        }
+        get {
+            return partyPrivilges;
+        }
+    }
+
+    public byte PPS {
+        set {
+            this.polePartySupport = value;
+        }
+        get {
+            return this.polePartySupport;
+        }
+    }
+
+    public byte RPS {
+        set {
+            this.realPartySupport = value;
+        }
+        get {
+            return this.realPartySupport;
+        }
     }
 
     public string Name()
     {
-        return m_szName;
+        return m_eName.ToString();
     }
 
     public List<CPartyMember> Members()
