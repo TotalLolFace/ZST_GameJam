@@ -11,7 +11,14 @@ public class GameManager : MonoBehaviour {
         PM.partyName = PartyName.KONFEDERACJA;
         PM.partyType = PartyType.RIGHT;
 
+        var ev = new DateEvent(new GameDate(2024, 3, 1));
+
+        Dispatcher.DateChanged += ev.Dispatch;
         Dispatcher.DateChanged += (s, e) => Debug.Log($"Hello World from T:{gameDate.Week}/M:{gameDate.Month}/R:{gameDate.Year}!");
+    }
+
+    private void Test(object sender, EventArgs e) {
+        Debug.Log(1);
     }
 
     private void Update() {
