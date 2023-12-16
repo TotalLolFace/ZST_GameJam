@@ -24,6 +24,12 @@ public class GameDate {
         this.week = 3;
     }
 
+    public GameDate(uint year, byte month, byte week) {
+        this.year = year;
+        this.month = month;
+        this.week = week;
+    }
+
     public void AddWeek() {
         if (this.week + 1 > 4) {
             this.week = 1;
@@ -46,5 +52,27 @@ public class GameDate {
 
     public void AddYear() {
         this.year++;
+    }
+
+    public static bool operator== (GameDate a, GameDate b) {
+        if ((object)a == (object)b) return true;
+
+        return (a.Year == b.Year && a.Month == b.Month && a.Week == b.Week);
+    }
+
+    public static bool operator!=(GameDate a, GameDate b) {
+        return !(a.Year == b.Year && a.Month == b.Month && a.Week == b.Week);
+    }
+
+    public override bool Equals(object obj) {
+        if (obj == null || GetType() != obj.GetType()) return false;
+
+        var date = (GameDate)obj;
+
+        return (this.Year == date.Year && this.Month == date.Month && this.Week == date.Week);
+    }
+
+    public override int GetHashCode() {
+        return this.Year.GetHashCode() ^ this.Month.GetHashCode() ^ this.Week.GetHashCode();
     }
 }
